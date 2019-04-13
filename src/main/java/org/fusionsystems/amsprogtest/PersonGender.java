@@ -1,4 +1,5 @@
 package org.fusionsystems.amsprogtest;
 
-public enum PersonGender {
+enum PersonGender {
+    MAN, WOMAN
 }

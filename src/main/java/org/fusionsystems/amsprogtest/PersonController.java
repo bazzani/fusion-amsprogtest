@@ -1,4 +1,15 @@
 package org.fusionsystems.amsprogtest;
 
-public class PersonController {
+class PersonController {
+    static PersonController create(PersonDatabase db) {
+        return null;
+    }
+
+    boolean addPerson(Person person) {
+        return false;
+    }
+
+    int calculateAverageAge(String subName) {
+        return 0;
+    }
 }
