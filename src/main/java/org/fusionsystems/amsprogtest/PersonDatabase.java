@@ -1,5 +1,6 @@
 package org.fusionsystems.amsprogtest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 class PersonDatabase {
@@ -10,7 +11,11 @@ class PersonDatabase {
     }
 
     List<Person> getData() {
-        return null;
+        return new ArrayList<>(this.dao);
+    }
+
+    boolean insertPerson(Person person) {
+        return this.dao.add(person);
     }
 
     static class Builder {

@@ -1,12 +1,18 @@
 package org.fusionsystems.amsprogtest;
 
 class PersonController {
+    private final PersonDatabase db;
+
+    private PersonController(PersonDatabase db) {
+        this.db = db;
+    }
+
     static PersonController create(PersonDatabase db) {
-        return null;
+        return new PersonController(db);
     }
 
     boolean addPerson(Person person) {
-        return false;
+        return this.db.insertPerson(person);
     }
 
     int calculateAverageAge(String subName) {

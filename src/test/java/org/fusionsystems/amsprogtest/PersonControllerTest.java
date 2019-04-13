@@ -27,7 +27,7 @@ public class PersonControllerTest {
      */
     @Test
     public void test_addPerson_validCase() {
-        PersonDatabase db = new PersonDatabase.Builder().setDao(new ArrayList<Person>()).build();
+        PersonDatabase db = new PersonDatabase.Builder().setDao(new ArrayList<>()).build();
         PersonController controller = PersonController.create(db);
 
         String correctName = "First Last";
