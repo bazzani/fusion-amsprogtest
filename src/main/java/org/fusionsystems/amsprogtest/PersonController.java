@@ -12,7 +12,11 @@ class PersonController {
     }
 
     boolean addPerson(Person person) {
-        return this.db.insertPerson(person);
+        if (person.nameFormatIsCorrect()) {
+            return this.db.insertPerson(person);
+        } else {
+            return false;
+        }
     }
 
     int calculateAverageAge(String subName) {

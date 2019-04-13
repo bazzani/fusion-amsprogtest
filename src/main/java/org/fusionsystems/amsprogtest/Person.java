@@ -7,9 +7,15 @@ class Person {
         this.name = name;
     }
 
+
     private int age;
     private PersonGender gender;
-    private String name;
+    private final String name;
+
+    boolean nameFormatIsCorrect() {
+        String[] nameParts = this.name.split(" ");
+        return nameParts.length == 2;
+    }
 
     static class Builder {
         private int age;
