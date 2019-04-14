@@ -12,7 +12,7 @@ class PersonController {
     }
 
     boolean addPerson(Person person) {
-        if (person.nameFormatIsCorrect()) {
+        if (person.nameFormatIsCorrect() && person.ageIsValid()) {
             return this.db.insertPerson(person);
         } else {
             return false;

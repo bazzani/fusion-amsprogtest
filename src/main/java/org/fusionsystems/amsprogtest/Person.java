@@ -17,6 +17,10 @@ class Person {
         return nameParts.length == 2;
     }
 
+    boolean ageIsValid() {
+        return this.age > -1;
+    }
+
     static class Builder {
         private int age;
         private PersonGender gender;

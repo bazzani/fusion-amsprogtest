@@ -74,9 +74,9 @@ public class PersonControllerTest {
      * Tests the data access layer PersonService:insertPerson()
      * is not inserted when age is -1
      */
-    @Test(expected = Exception.class)
+    @Test
     public void test_addPerson_wrongAge() {
-        PersonDatabase db = new PersonDatabase.Builder().setDao(new ArrayList<Person>()).build();
+        PersonDatabase db = new PersonDatabase.Builder().setDao(new ArrayList<>()).build();
         PersonController controller = PersonController.create(db);
         String correctName = "First Last";
         int wrongAge = -1;
