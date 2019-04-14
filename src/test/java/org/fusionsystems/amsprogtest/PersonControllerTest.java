@@ -141,12 +141,12 @@ public class PersonControllerTest {
      * and is inserted when gender is WOMAN, age is 50 and first name is ended with "ko"
      */
     @Test
-    public void test_addPerson_womon_name() {
-        PersonDatabase db = new PersonDatabase.Builder().setDao(new ArrayList<Person>()).build();
+    public void test_addPerson_woman_name() {
+        PersonDatabase db = new PersonDatabase.Builder().setDao(new ArrayList<>()).build();
         PersonController controller = PersonController.create(db);
 
         String firstNameNotEndsWithKo = "ko_ Last";
-        int testAge = 51;
+        int testAge = 50;
         PersonGender gender = PersonGender.WOMAN;
 
         boolean result =

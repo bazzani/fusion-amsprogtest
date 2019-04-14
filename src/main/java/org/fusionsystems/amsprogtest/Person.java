@@ -30,8 +30,26 @@ class Person {
     }
 
     private boolean isNamedJohn() {
+        return getFirstName().equals("John");
+    }
+
+    private String getFirstName() {
         String[] nameParts = getNameParts();
-        return nameParts[0].equals("John");
+        return nameParts[0];
+    }
+
+    boolean isNotAnExcludedWoman() {
+        return !isAnExcludedWoman();
+    }
+
+    private boolean isAnExcludedWoman() {
+        boolean firstNameNotEndingWithKo = isFirstNameNotEndingWithKo();
+        return this.gender.equals(PersonGender.WOMAN) && this.age == 50 && firstNameNotEndingWithKo;
+    }
+
+    private boolean isFirstNameNotEndingWithKo() {
+        String firstName = getFirstName();
+        return !firstName.endsWith("ko");
     }
 
     static class Builder {

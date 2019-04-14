@@ -22,7 +22,8 @@ class PersonController {
     private boolean isAValidPerson(Person person) {
         return person.nameFormatIsCorrect() &&
                 person.ageIsValid() &&
-                person.isNotASpecialAgedJohn();
+                person.isNotASpecialAgedJohn() &&
+                person.isNotAnExcludedWoman();
     }
 
     int calculateAverageAge(String subName) {
