@@ -27,7 +27,7 @@ class PersonController {
     }
 
     int calculateAverageAge(String subName) {
-        double average = db.getPeopleNamed(subName).stream()
+        double average = db.getPeopleNamed(subName)
                 .mapToInt(Person::getAge)
                 .summaryStatistics()
                 .getAverage();

@@ -7,8 +7,8 @@ class Person {
         this.name = name;
     }
 
-    private int age;
-    private PersonGender gender;
+    private final int age;
+    private final PersonGender gender;
     private final String name;
 
     int getAge() {
@@ -46,13 +46,15 @@ class Person {
     }
 
     private boolean isAnExcludedWoman() {
-        boolean firstNameNotEndingWithKo = isFirstNameNotEndingWithKo();
-        return this.gender.equals(PersonGender.WOMAN) && this.age == 50 && firstNameNotEndingWithKo;
+        boolean isFemale = this.gender.equals(PersonGender.WOMAN);
+        boolean isAnExcludedAge = this.age == 50;
+        boolean isAnExcludedFirstName = isFirstNameNotEndingWith("ko");
+        return isFemale && isAnExcludedAge && isAnExcludedFirstName;
     }
 
-    private boolean isFirstNameNotEndingWithKo() {
+    private boolean isFirstNameNotEndingWith(String suffix) {
         String firstName = getFirstName();
-        return !firstName.endsWith("ko");
+        return !firstName.endsWith(suffix);
     }
 
     boolean nameContains(String subName) {

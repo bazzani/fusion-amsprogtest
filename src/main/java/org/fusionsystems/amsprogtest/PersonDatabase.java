@@ -2,10 +2,10 @@ package org.fusionsystems.amsprogtest;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 class PersonDatabase {
-    private List<Person> dao;
+    private final List<Person> dao;
 
     private PersonDatabase(List<Person> dao) {
         this.dao = dao;
@@ -19,10 +19,9 @@ class PersonDatabase {
         return this.dao.add(person);
     }
 
-    List<Person> getPeopleNamed(String subName) {
+    Stream<Person> getPeopleNamed(String subName) {
         return dao.stream()
-                .filter(person -> person.nameContains(subName))
-                .collect(Collectors.toList());
+                .filter(person -> person.nameContains(subName));
     }
 
     static class Builder {
