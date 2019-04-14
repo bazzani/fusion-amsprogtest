@@ -97,11 +97,11 @@ public class PersonControllerTest {
     /**
      * Tests the data access layer PersonService:insertPerson()
      * is not inserted when age is 51 and first name is John
-     * is not inserted when age is 51 and first name is not John
+     * is inserted when age is 51 and first name is not John
      */
     @Test
     public void test_addPerson_specialAge() {
-        PersonDatabase db = new PersonDatabase.Builder().setDao(new ArrayList<Person>()).build();
+        PersonDatabase db = new PersonDatabase.Builder().setDao(new ArrayList<>()).build();
         PersonController controller = PersonController.create(db);
 
         String testName = "John Last";

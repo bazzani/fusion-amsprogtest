@@ -13,12 +13,25 @@ class Person {
     private final String name;
 
     boolean nameFormatIsCorrect() {
-        String[] nameParts = this.name.split(" ");
+        String[] nameParts = getNameParts();
         return nameParts.length == 2;
+    }
+
+    private String[] getNameParts() {
+        return this.name.split(" ");
     }
 
     boolean ageIsValid() {
         return this.age > -1;
+    }
+
+    boolean isNotASpecialAgedJohn() {
+        return !(this.age == 51 && isNamedJohn());
+    }
+
+    private boolean isNamedJohn() {
+        String[] nameParts = getNameParts();
+        return nameParts[0].equals("John");
     }
 
     static class Builder {

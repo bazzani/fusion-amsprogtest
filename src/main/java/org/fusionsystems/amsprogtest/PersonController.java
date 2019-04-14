@@ -12,11 +12,17 @@ class PersonController {
     }
 
     boolean addPerson(Person person) {
-        if (person.nameFormatIsCorrect() && person.ageIsValid()) {
+        if (isAValidPerson(person)) {
             return this.db.insertPerson(person);
         } else {
             return false;
         }
+    }
+
+    private boolean isAValidPerson(Person person) {
+        return person.nameFormatIsCorrect() &&
+                person.ageIsValid() &&
+                person.isNotASpecialAgedJohn();
     }
 
     int calculateAverageAge(String subName) {
