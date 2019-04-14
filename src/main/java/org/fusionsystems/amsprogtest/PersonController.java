@@ -27,6 +27,12 @@ class PersonController {
     }
 
     int calculateAverageAge(String subName) {
-        return 0;
+        double average = db.getPeopleNamed(subName).stream()
+                .mapToInt(Person::getAge)
+                .summaryStatistics()
+                .getAverage();
+
+        return Double.valueOf(average)
+                .intValue();
     }
 }

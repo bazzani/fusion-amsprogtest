@@ -7,10 +7,13 @@ class Person {
         this.name = name;
     }
 
-
     private int age;
     private PersonGender gender;
     private final String name;
+
+    int getAge() {
+        return age;
+    }
 
     boolean nameFormatIsCorrect() {
         String[] nameParts = getNameParts();
@@ -50,6 +53,10 @@ class Person {
     private boolean isFirstNameNotEndingWithKo() {
         String firstName = getFirstName();
         return !firstName.endsWith("ko");
+    }
+
+    boolean nameContains(String subName) {
+        return this.name.contains(subName);
     }
 
     static class Builder {

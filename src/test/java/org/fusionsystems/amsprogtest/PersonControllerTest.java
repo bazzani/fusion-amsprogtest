@@ -181,7 +181,7 @@ public class PersonControllerTest {
     @Test
     public void test_calculateAverageAge() {
         String defaultName = "First Last";
-        String subName = "Last";
+        String subName = "Fir";
 
         PersonGender gender = PersonGender.MAN;
         int ageSum = 0;

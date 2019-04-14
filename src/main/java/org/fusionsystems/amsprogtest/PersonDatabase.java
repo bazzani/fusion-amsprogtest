@@ -2,6 +2,7 @@ package org.fusionsystems.amsprogtest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 class PersonDatabase {
     private List<Person> dao;
@@ -16,6 +17,12 @@ class PersonDatabase {
 
     boolean insertPerson(Person person) {
         return this.dao.add(person);
+    }
+
+    List<Person> getPeopleNamed(String subName) {
+        return dao.stream()
+                .filter(person -> person.nameContains(subName))
+                .collect(Collectors.toList());
     }
 
     static class Builder {
