@@ -1,8 +1,8 @@
 package org.fusionsystems.amsprogtest;
 
-public class PersonController {
+class PersonController {
     private final PersonDatabase personDatabase;
-    private PersonService personService;
+    private final PersonService personService;
 
     private PersonController(PersonDatabase personDatabase, PersonService personService) {
         this.personDatabase = personDatabase;
