@@ -3,8 +3,8 @@ package org.fusionsystems.amsprogtest;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PersonDatabase {
-    private ArrayList<Person> dao;
+class PersonDatabase {
+    private final ArrayList<Person> dao;
 
     private PersonDatabase(ArrayList<Person> dao) {
         this.dao = dao;
