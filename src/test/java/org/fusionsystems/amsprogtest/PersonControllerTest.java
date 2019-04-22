@@ -6,12 +6,14 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertArrayEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * Unit test which proves that person controller's methods are working
@@ -36,18 +38,20 @@ public class PersonControllerTest extends TestCase {
         String correctName = "First Last";
         int correctAge = 0;
         PersonGender gender = PersonGender.MAN;
-        Person person =
-                new Person.Builder()
-                        .setAge(correctAge)
-                        .setGender(gender)
-                        .setName(correctName)
-                        .build();
+        Person person = new Person.Builder()
+                .setAge(correctAge)
+                .setGender(gender)
+                .setName(correctName)
+                .build();
 
-        when(personService.insertPerson(person)).then(invocation -> {
-            Person personArg = invocation.getArgument(0);
-            db.addPerson(personArg);
-            return true;
-        });
+        when(personService.insertPerson(person))
+                .then(invocation -> {
+                            Person personArg = invocation.getArgument(0);
+                            return personArg.getAge() == 0 &&
+                                    personArg.getName().equals("First Last") &&
+                                    personArg.getGender().equals(PersonGender.MAN);
+                        }
+                );
 
         // when
         boolean result = controller.addPerson(person);
@@ -71,21 +75,27 @@ public class PersonControllerTest extends TestCase {
         String wrongName = "FirstLast";
         int correctAge = 0;
         PersonGender gender = PersonGender.MAN;
+        Person person = new Person.Builder()
+                .setAge(correctAge)
+                .setGender(gender)
+                .setName(wrongName)
+                .build();
+
+        when(personService.insertPerson(person))
+                .then(invocation -> {
+                            Person personArg = invocation.getArgument(0);
+                            String[] nameParts = personArg.getName().split(" ");
+                            return nameParts.length == 2;
+                        }
+                );
 
         // when
-        boolean result =
-                controller.addPerson(
-                        new Person.Builder()
-                                .setAge(correctAge)
-                                .setGender(gender)
-                                .setName(wrongName)
-                                .build());
-
+        boolean result = controller.addPerson(person);
 
         // then
         assertArrayEquals(new Person[0], db.getData().toArray());
         assertFalse(result);
-        verifyZeroInteractions(personService);
+        verify(personService).insertPerson(person);
     }
 
     /**
@@ -101,14 +111,25 @@ public class PersonControllerTest extends TestCase {
         String correctName = "First Last";
         int wrongAge = -1;
         PersonGender gender = PersonGender.MAN;
+        Person person = new Person.Builder()
+                .setAge(wrongAge)
+                .setGender(gender)
+                .setName(correctName)
+                .build();
+
+        when(personService.insertPerson(person))
+                .then(invocation -> {
+                            Person personArg = invocation.getArgument(0);
+                            if (person.getAge() < 0) {
+                                throw new IllegalArgumentException("Age is invalid : " + personArg.getAge());
+                            }
+
+                            return true;
+                        }
+                );
 
         // when
-        controller.addPerson(
-                new Person.Builder()
-                        .setAge(wrongAge)
-                        .setGender(gender)
-                        .setName(correctName)
-                        .build());
+        controller.addPerson(person);
 
         // then
         fail("Exception expected when age is invalid");
@@ -128,36 +149,43 @@ public class PersonControllerTest extends TestCase {
         String testName = "John Last";
         int testAge = 51;
         PersonGender gender = PersonGender.MAN;
+        Person personJohn = new Person.Builder()
+                .setAge(testAge)
+                .setGender(gender)
+                .setName(testName)
+                .build();
+
+        when(personService.insertPerson(personJohn))
+                .then(invocation -> {
+                            Person personArg = invocation.getArgument(0);
+                            return personArg.getAge() != 51;
+                        }
+                );
 
         // when
-        boolean result =
-                controller.addPerson(
-                        new Person.Builder()
-                                .setAge(testAge)
-                                .setGender(gender)
-                                .setName(testName)
-                                .build());
+        boolean result = controller.addPerson(personJohn);
 
         // then
         assertArrayEquals(new Person[0], db.getData().toArray());
         assertFalse(result);
+        verify(personService).insertPerson(personJohn);
+
 
         // given
         String testName2 = "NotJohn Last";
-        Person person =
-                new Person.Builder()
-                        .setAge(testAge)
-                        .setGender(gender)
-                        .setName(testName2)
-                        .build();
+        Person personNotJohn = new Person.Builder()
+                .setAge(testAge)
+                .setGender(gender)
+                .setName(testName2)
+                .build();
 
         // when
-        result = controller.addPerson(person);
+        result = controller.addPerson(personNotJohn);
 
         // then
         assertArrayEquals(new Person[0], db.getData().toArray());
         assertFalse(result);
-        verifyZeroInteractions(personService);
+        verify(personService).insertPerson(personNotJohn);
     }
 
     /**
@@ -174,41 +202,50 @@ public class PersonControllerTest extends TestCase {
         String firstNameNotEndsWithKo = "ko_ Last";
         int testAge = 50;
         PersonGender gender = PersonGender.WOMAN;
+        Person womanFirstNameNotEndsWithKo = new Person.Builder()
+                .setAge(testAge)
+                .setGender(gender)
+                .setName(firstNameNotEndsWithKo)
+                .build();
+
+        when(personService.insertPerson(womanFirstNameNotEndsWithKo))
+                .then(this::mockServiceWomanInvocationHandler);
 
         // when
-        boolean result =
-                controller.addPerson(
-                        new Person.Builder()
-                                .setAge(testAge)
-                                .setGender(gender)
-                                .setName(firstNameNotEndsWithKo)
-                                .build());
+        boolean result = controller.addPerson(womanFirstNameNotEndsWithKo);
 
         // then
         assertArrayEquals(new Person[0], db.getData().toArray());
         assertFalse(result);
+        verify(personService).insertPerson(womanFirstNameNotEndsWithKo);
 
         // given
         String firstNameEndsWithKo = "_ko Last";
-        Person person = new Person.Builder()
+        Person womanFirstNameEndsWithKo = new Person.Builder()
                 .setAge(testAge)
                 .setGender(gender)
                 .setName(firstNameEndsWithKo)
                 .build();
 
-        when(personService.insertPerson(person)).then(invocation -> {
-            Person personArg = invocation.getArgument(0);
-            db.addPerson(personArg);
-            return true;
-        });
+        when(personService.insertPerson(womanFirstNameEndsWithKo))
+                .then(this::mockServiceWomanInvocationHandler);
 
         // when
-        result = controller.addPerson(person);
+        result = controller.addPerson(womanFirstNameEndsWithKo);
 
         // then
-        assertArrayEquals(new Person[]{person}, db.getData().toArray());
+        assertArrayEquals(new Person[]{womanFirstNameEndsWithKo}, db.getData().toArray());
         assertTrue(result);
-        verify(personService).insertPerson(person);
+        verify(personService).insertPerson(womanFirstNameEndsWithKo);
+    }
+
+    private boolean mockServiceWomanInvocationHandler(InvocationOnMock invocation) {
+        Person personArg = invocation.getArgument(0);
+        String[] nameParts = personArg.getName().split(" ");
+        String firstName = nameParts[0];
+        return personArg.getGender().equals(PersonGender.WOMAN) &&
+                personArg.getAge() == 50 &&
+                firstName.endsWith("ko");
     }
 
     /**

@@ -14,36 +14,11 @@ public class PersonController {
     }
 
     boolean addPerson(Person person) {
-        if (ageIsLowerThanMinimum(person.getAge())) {
-            throw new IllegalArgumentException("Person age is lower than the minimum: " + person.getAge());
+        if (personService.insertPerson(person)) {
+            return personDatabase.addPerson(person);
         } else {
-            boolean isValidPerson = isValidMan(person) || isValidWoman(person);
-            if (isValidPerson) {
-                personService.insertPerson(person);
-                return true;
-            } else {
-                return false;
-            }
+            return false;
         }
-    }
-
-    private boolean ageIsLowerThanMinimum(int personAge) {
-        return personAge < 0;
-    }
-
-    private boolean isValidMan(Person person) {
-        return person.getAge() == 0 &&
-                person.getGender().equals(PersonGender.MAN) &&
-                person.getName().equals("First Last");
-    }
-
-    private boolean isValidWoman(Person person) {
-        String[] nameParts = person.getName().split(" ");
-        String firstName = nameParts[0];
-
-        return person.getGender().equals(PersonGender.WOMAN) &&
-                person.getAge() == 50 &&
-                firstName.endsWith("ko");
     }
 
     int calculateAverageAge(String subName) {
