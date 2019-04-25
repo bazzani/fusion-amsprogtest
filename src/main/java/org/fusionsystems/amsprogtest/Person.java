@@ -1,6 +1,6 @@
 package org.fusionsystems.amsprogtest;
 
-class Person {
+public class Person {
     private final int age;
     private final PersonGender gender;
     private final String name;

@@ -1,6 +1,7 @@
 package org.fusionsystems.amsprogtest;
 
 
+import org.fusionsystems.amsprogtest.service.PersonService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -31,7 +32,6 @@ public class PersonControllerTest {
     public void test_addPerson_validCase() {
         // given
         PersonDatabase db = new PersonDatabase.Builder().setDao(new ArrayList<>()).build();
-//        PersonController controller = PersonController.create(db, personService);
         PersonController controller = PersonController.create(personService);
 
         String correctName = "First Last";
@@ -73,7 +73,6 @@ public class PersonControllerTest {
     public void test_addPerson_wrongName() {
         // given
         PersonDatabase db = new PersonDatabase.Builder().setDao(new ArrayList<>()).build();
-//        PersonController controller = PersonController.create(db, personService);
         PersonController controller = PersonController.create(personService);
 
         String wrongName = "FirstLast";
@@ -110,7 +109,6 @@ public class PersonControllerTest {
     public void test_addPerson_wrongAge() {
         // given
         PersonDatabase db = new PersonDatabase.Builder().setDao(new ArrayList<>()).build();
-//        PersonController controller = PersonController.create(db, personService);
         PersonController controller = PersonController.create(personService);
 
         String correctName = "First Last";
@@ -149,7 +147,6 @@ public class PersonControllerTest {
     public void test_addPerson_specialAge() {
         // given
         PersonDatabase db = new PersonDatabase.Builder().setDao(new ArrayList<>()).build();
-//        PersonController controller = PersonController.create(db, personService);
         PersonController controller = PersonController.create(personService);
 
         String testName = "John Last";
@@ -203,7 +200,6 @@ public class PersonControllerTest {
     public void test_addPerson_woman_name() {
         // given
         PersonDatabase db = new PersonDatabase.Builder().setDao(new ArrayList<>()).build();
-//        PersonController controller = PersonController.create(db, personService);
         PersonController controller = PersonController.create(personService);
 
         String firstNameNotEndsWithKo = "ko_ Last";
@@ -218,7 +214,7 @@ public class PersonControllerTest {
         when(personService.insertPerson(womanFirstNameNotEndsWithKo))
                 .then(invocation -> {
                     Person personArg = invocation.getArgument(0);
-                    if (mockInsertPersonInvocationHandler(personArg)) {
+                    if (isAFiftyYearOldWomanNamedKo(personArg)) {
                         return db.addPerson(personArg);
                     } else {
                         return false;
@@ -233,6 +229,7 @@ public class PersonControllerTest {
         assertFalse(result);
         verify(personService).insertPerson(womanFirstNameNotEndsWithKo);
 
+
         // given
         String firstNameEndsWithKo = "_ko Last";
         Person womanFirstNameEndsWithKo = new Person.Builder()
@@ -244,7 +241,7 @@ public class PersonControllerTest {
         when(personService.insertPerson(womanFirstNameEndsWithKo))
                 .then(invocation -> {
                     Person personArg = invocation.getArgument(0);
-                    if (mockInsertPersonInvocationHandler(personArg)) {
+                    if (isAFiftyYearOldWomanNamedKo(personArg)) {
                         return db.addPerson(personArg);
                     } else {
                         return false;
@@ -260,7 +257,7 @@ public class PersonControllerTest {
         verify(personService).insertPerson(womanFirstNameEndsWithKo);
     }
 
-    private boolean mockInsertPersonInvocationHandler(Person person) {
+    private boolean isAFiftyYearOldWomanNamedKo(Person person) {
         String[] nameParts = person.getName().split(" ");
         String firstName = nameParts[0];
         return person.getGender().equals(PersonGender.WOMAN) &&
@@ -297,7 +294,6 @@ public class PersonControllerTest {
                 .filter(person -> person.getName().contains(subName))
                 .collect(Collectors.toList()));
 
-//        PersonController controller = PersonController.create(db, personService);
         PersonController controller = PersonController.create(personService);
         int expectedAverage = ageSum / personDatas.size();
 
